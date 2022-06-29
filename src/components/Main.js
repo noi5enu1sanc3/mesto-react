@@ -1,3 +1,6 @@
+import ImagePopup from './ImagePopup';
+import PopupWithForm from './PopupWithForm';
+
 function Main() {
   function handleEditAvatarClick() {
     document
@@ -49,143 +52,108 @@ function Main() {
       <section className="cards">
         <ul className="cards__items"></ul>
       </section>
-      <section className="popup popup_style_view-image popup_role_view-image">
-        <div className="popup__image-container">
-          <img className="popup__image" alt="" />
-          <p className="popup__caption"></p>
-          <button type="button" className="popup__close-btn"></button>
-        </div>
-      </section>
 
-      {/* Edit profile popup */}
-      <section className="popup popup_role_edit-profile">
-        <div className="popup__container">
-          <h2 className="popup__heading">Редактировать профиль</h2>
-          <form name="userProfileInfo" className="popup__form" noValidate>
-            <input
-              name="name"
-              id="username-input"
-              type="text"
-              className="popup__input-form popup__input-form_type_username"
-              placeholder="Как вас зовут?"
-              minLength="2"
-              maxLength="40"
-              required
-            />
-            <div className="popup__input-error-container">
-              <span
-                className="popup__input-error"
-                id="username-input-error"
-              ></span>
-            </div>
-            <input
-              name="about"
-              id="userinfo-input"
-              type="text"
-              className="popup__input-form popup__input-form_type_userinfo"
-              placeholder="Кто вы?"
-              minLength="2"
-              maxLength="200"
-              required
-            />
-            <div className="popup__input-error-container">
-              <span
-                className="popup__input-error"
-                id="userinfo-input-error"
-              ></span>
-            </div>
-            <button type="submit" className="popup__save-btn">
-              Сохранить
-            </button>
-          </form>
-          <button type="button" className="popup__close-btn"></button>
+      <PopupWithForm name="edit-profile" title="Редактировать профиль">
+        <input
+          name="name"
+          id="username-input"
+          type="text"
+          className="popup__input-form popup__input-form_type_username"
+          placeholder="Как вас зовут?"
+          minLength="2"
+          maxLength="40"
+          required
+        />
+        <div className="popup__input-error-container">
+          <span
+            className="popup__input-error"
+            id="username-input-error"
+          ></span>
         </div>
-      </section>
+        <input
+          name="about"
+          id="userinfo-input"
+          type="text"
+          className="popup__input-form popup__input-form_type_userinfo"
+          placeholder="Кто вы?"
+          minLength="2"
+          maxLength="200"
+          required
+        />
+        <div className="popup__input-error-container">
+          <span
+            className="popup__input-error"
+            id="userinfo-input-error"
+          ></span>
+        </div>
+        <button type="submit" className="popup__save-btn">
+          Сохранить
+        </button>
+      </PopupWithForm>
 
-      {/* Upload new card popup */}
-      <section className="popup popup_role_add-card">
-        <div className="popup__container">
-          <h2 className="popup__heading">Новое место</h2>
-          <form name="newCardUpload" className="popup__form" noValidate>
-            <input
-              name="name"
-              id="cardName-input"
-              type="text"
-              className="popup__input-form popup__input-form_type_card-name"
-              placeholder="Название"
-              minLength="2"
-              maxLength="30"
-              required
-            />
-            <div className="popup__input-error-container">
-              <span
-                className="popup__input-error"
-                id="cardName-input-error"
-              ></span>
-            </div>
-            <input
-              name="link"
-              id="cardLink-input"
-              type="url"
-              className="popup__input-form popup__input-form_type_card-link"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <div className="popup__input-error-container">
-              <span
-                className="popup__input-error"
-                id="cardLink-input-error"
-              ></span>
-            </div>
-            <button type="submit" className="popup__save-btn">
-              Создать
-            </button>
-          </form>
-          <button type="button" className="popup__close-btn"></button>
+      <PopupWithForm name="add-card" title="Новое место">
+        <input
+          name="name"
+          id="cardName-input"
+          type="text"
+          className="popup__input-form popup__input-form_type_card-name"
+          placeholder="Название"
+          minLength="2"
+          maxLength="30"
+          required
+        />
+        <div className="popup__input-error-container">
+          <span
+            className="popup__input-error"
+            id="cardName-input-error"
+          ></span>
         </div>
-      </section>
+        <input
+          name="link"
+          id="cardLink-input"
+          type="url"
+          className="popup__input-form popup__input-form_type_card-link"
+          placeholder="Ссылка на картинку"
+          required
+        />
+        <div className="popup__input-error-container">
+          <span
+            className="popup__input-error"
+            id="cardLink-input-error"
+          ></span>
+        </div>
+        <button type="submit" className="popup__save-btn">
+          Создать
+        </button>
+      </PopupWithForm>
 
-      {/* Delete confirmation popup */}
-      <section className="popup popup_role_confirm">
-        <div className="popup__container">
-          <h2 className="popup__heading popup__heading_style_without-input">
-            Вы уверены?
-          </h2>
-          <form className="popup__form" name="confirmDelete" noValidate>
-            <button className="popup__save-btn" type="submit">
-              Да
-            </button>
-          </form>
-          <button type="button" className="popup__close-btn"></button>
-        </div>
-      </section>
+      <PopupWithForm name="confirm" title="Вы уверены?">
+        <button className="popup__save-btn" type="submit">
+          Да
+        </button>
+      </PopupWithForm>
 
-      {/* Change avatar popup */}
-      <section className="popup popup_role_change-avatar">
-        <div className="popup__container">
-          <h2 className="popup__heading">Обновить аватар</h2>
-          <form name="changeAvatar" className="popup__form" noValidate>
-            <input
-              name="avatar"
-              id="avatarLink-input"
-              type="url"
-              className="popup__input-form popup__input-form_type_avatar-link"
-              placeholder="Ссылка на аватар"
-              required
-            />
-            <div className="popup__input-error-container">
-              <span
-                className="popup__input-error"
-                id="avatarLink-input-error"
-              ></span>
-            </div>
-            <button type="submit" className="popup__save-btn">
-              Сохранить
-            </button>
-          </form>
-          <button type="button" className="popup__close-btn"></button>
+      <PopupWithForm name="change-avatar" title="Обновить аватар">
+        <input
+          name="avatar"
+          id="avatarLink-input"
+          type="url"
+          className="popup__input-form popup__input-form_type_avatar-link"
+          placeholder="Ссылка на аватар"
+          required
+        />
+        <div className="popup__input-error-container">
+          <span
+            className="popup__input-error"
+            id="avatarLink-input-error"
+          ></span>
         </div>
-      </section>
+        <button type="submit" className="popup__save-btn">
+          Сохранить
+        </button>
+      </PopupWithForm>
+
+      <ImagePopup />
     </main>
   );
 }
