@@ -1,4 +1,22 @@
+import React from "react";
+import api from "../utils/Api"
+
 function Main(props) {
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
+  const [cards, setCards] = React.useState([]);
+
+  React.useEffect(
+   () => {
+      api.getUserInfo()
+        .then((res) => {
+          setUserName(res.name);
+          setUserDescription(res.about);
+          setUserAvatar(res.avatar);
+        })
+    }
+  );
 
   return (
     <main className="content">
@@ -8,11 +26,11 @@ function Main(props) {
             className="profile__avatar-overlay"
             onClick={props.onEditAvatar}
           ></div>
-          <img alt="аватар пользователя" className="profile__avatar" />
+          <img alt="аватар пользователя" className="profile__avatar" src={userAvatar}/>
         </div>
         <div className="profile__about">
           <div className="profile__name-edit-wrapper">
-            <h1 className="profile__username">Онейрос</h1>
+            <h1 className="profile__username">{userName}</h1>
             <button
               type="button"
               aria-label="Редактировать профиль"
@@ -20,7 +38,7 @@ function Main(props) {
               onClick={props.onEditProfile}
             ></button>
           </div>
-          <p className="profile__userinfo">Исследователь снов</p>
+          <p className="profile__userinfo">{userDescription}</p>
         </div>
         <button
           type="button"
@@ -32,8 +50,6 @@ function Main(props) {
       <section className="cards">
         <ul className="cards__items"></ul>
       </section>
-
-     
     </main>
   );
 }
