@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from 'react'
 import api from "../utils/Api";
 import Card from "./Card";
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = React.useState([]);
+  const [userName, setUserName] = useState("");
+  const [userDescription, setUserDescription] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [cards, setCards] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getUserInfo()
     .then((res) => {
       setUserName(res.name);
@@ -18,7 +18,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
     .catch((err) => console.log(`Возникла ошибка: ${err}`));
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getInitialCards()
     .then((res) => {
       setCards(res);
@@ -58,15 +58,15 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       </section>
       <section className="cards">
         <ul className="cards__items">
-          {cards.map((card) => {
-            return (
+          {cards.map((card) => 
+             (
               <Card
                 key={card._id}
                 card={card}
                 onCardClick={onCardClick}
               />
-            );
-          })}
+            ))
+          }
         </ul>
       </section>
     </main>
