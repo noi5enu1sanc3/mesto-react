@@ -16,7 +16,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       setUserAvatar(res.avatar);
     })
     .catch((err) => console.log(`Возникла ошибка: ${err}`));
-  });
+  }, []);
 
   React.useEffect(() => {
     api.getInitialCards()
@@ -24,7 +24,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       setCards(res);
     })
     .catch((err) => console.log(`Возникла ошибка: ${err}`));
-  });
+  }, []);
 
   return (
     <main className="content">
