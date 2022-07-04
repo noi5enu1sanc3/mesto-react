@@ -8,7 +8,7 @@ function PopupWithForm({ name, isOpen, title, onClose, children }) {
       <div className="popup__container">
         <h2 className="popup__heading">{title}</h2>
         <form
-          name={`${name}`}
+          name={name}
           className="popup__form"
           noValidate>
           {children}
