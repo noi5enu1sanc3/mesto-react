@@ -1,9 +1,10 @@
-function ImagePopup({ name, link, isOpen, onClose }) {
+function ImagePopup({ name, link, isOpen, onClose, onOverlay }) {
   return (
     <section
       className={`popup popup_style_view-image popup_role_view-image ${
         isOpen && "popup_status_show"
       }`}
+      onClick={onOverlay}
     >
       <div className="popup__image-container">
         <img
