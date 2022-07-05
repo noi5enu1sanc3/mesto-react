@@ -1,9 +1,11 @@
-function PopupWithForm({ name, isOpen, title, onClose, children, buttonContent }) {
+function PopupWithForm({ name, isOpen, title, onClose, onOverlay, children, buttonContent }) {
+
   return (
     <section
       className={`popup popup_role_${name} ${
         isOpen && "popup_status_show"
       }`}
+      onClick={onOverlay}
     >
       <div className="popup__container">
         <h2 className="popup__heading">{title}</h2>

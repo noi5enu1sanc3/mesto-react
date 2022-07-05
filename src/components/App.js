@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -41,6 +41,22 @@ function App() {
     setSelectedCard({ isImagePopupOpen: false, name: "", link: "" });
   };
 
+  const handleOverlayClick = (evt) => {
+    if (evt.target === evt.currentTarget) {
+      closeAllPopups();
+    }
+  }
+
+  useEffect(() => {
+    const closeOnEsc = (evt) => {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    document.addEventListener('keydown', closeOnEsc);
+    return () => document.removeEventListener('keydown', closeOnEsc);
+    }, [])
+
   return (
     <div className="page">
       <Header />
@@ -57,6 +73,7 @@ function App() {
         buttonContent="Сохранить"
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
+        onOverlay={handleOverlayClick}
       >
         <input
           name="name"
@@ -92,6 +109,7 @@ function App() {
         buttonContent={"Создать"}
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
+        onOverlay={handleOverlayClick}
       >
         <input
           name="name"
@@ -124,6 +142,7 @@ function App() {
         title="Вы уверены?"
         buttonContent={"Да"}
         onClose={closeAllPopups}
+        onOverlay={handleOverlayClick}
       >
       </PopupWithForm>
 
@@ -133,6 +152,7 @@ function App() {
         buttonContent={"Сохранить"}
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
+        onOverlay={handleOverlayClick}
       >
         <input
           name="avatar"
@@ -155,6 +175,7 @@ function App() {
         link={selectedCard.link}
         isOpen={selectedCard.isImagePopupOpen}
         onClose={closeAllPopups}
+        onOverlay={handleOverlayClick}
       />
     </div>
   );
