@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -6,10 +6,8 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 function App() {
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({
     isImagePopupOpen: false,
@@ -25,14 +23,11 @@ function App() {
     });
   };
 
-  const handleEditAvatarClick = () =>
-    setIsEditAvatarPopupOpen(true);
+  const handleEditAvatarClick = () => setIsEditAvatarPopupOpen(true);
 
-  const handleEditProfileClick = () =>
-    setIsEditProfilePopupOpen(true);
+  const handleEditProfileClick = () => setIsEditProfilePopupOpen(true);
 
-  const handleAddPlaceClick = () =>
-    setIsAddPlacePopupOpen(true);
+  const handleAddPlaceClick = () => setIsAddPlacePopupOpen(true);
 
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
@@ -45,17 +40,29 @@ function App() {
     if (evt.target === evt.currentTarget) {
       closeAllPopups();
     }
-  }
+  };
 
   useEffect(() => {
-    const closeOnEsc = (evt) => {
-      if (evt.key === 'Escape') {
-        closeAllPopups();
-      }
+    if (
+      isEditAvatarPopupOpen === true ||
+      isEditProfilePopupOpen === true ||
+      isAddPlacePopupOpen === true ||
+      selectedCard.isImagePopupOpen === true
+    ) {
+      const closeOnEsc = (evt) => {
+        if (evt.key === "Escape") {
+          closeAllPopups();
+        }
+      };
+      document.addEventListener("keydown", closeOnEsc);
+      return () => document.removeEventListener("keydown", closeOnEsc);
     }
-    document.addEventListener('keydown', closeOnEsc);
-    return () => document.removeEventListener('keydown', closeOnEsc);
-    }, [])
+  }, [
+    isEditAvatarPopupOpen,
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    selectedCard.isImagePopupOpen,
+  ]);
 
   return (
     <div className="page">
@@ -143,8 +150,7 @@ function App() {
         buttonContent={"Да"}
         onClose={closeAllPopups}
         onOverlay={handleOverlayClick}
-      >
-      </PopupWithForm>
+      ></PopupWithForm>
 
       <PopupWithForm
         name="change-avatar"
