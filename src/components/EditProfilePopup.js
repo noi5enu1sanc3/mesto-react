@@ -3,6 +3,8 @@ import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function EditProfilePopup({ isOpen, onClose, onOverlay, onUpdateUser }) {
+  const currentUser = useContext(CurrentUserContext);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -14,18 +16,16 @@ function EditProfilePopup({ isOpen, onClose, onOverlay, onUpdateUser }) {
     setDescription(evt.target.value);
   }
 
-  const user = useContext(CurrentUserContext);
-
   useEffect(() => {
-    if (user !== null) {
-      setName(user.name);
-      setDescription(user.about);
+    if (currentUser !== null) {
+      setName(currentUser.name);
+      setDescription(currentUser.about);
     }
-  }, [user]);
+  }, [currentUser]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-  
+
     // Передаём значения управляемых компонентов во внешний обработчик
     onUpdateUser({
       name,
@@ -45,7 +45,7 @@ function EditProfilePopup({ isOpen, onClose, onOverlay, onUpdateUser }) {
     >
       <input
         onChange={handleNameChange}
-        value={user !== null ? name : ""}
+        value={currentUser !== null ? name : ""}
         name="name"
         id="username-input"
         type="text"
@@ -60,7 +60,7 @@ function EditProfilePopup({ isOpen, onClose, onOverlay, onUpdateUser }) {
       </div>
       <input
         onChange={handleDescriptionChange}
-        value={user !== null ? description : ""}
+        value={currentUser !== null ? description : ""}
         name="about"
         id="userinfo-input"
         type="text"

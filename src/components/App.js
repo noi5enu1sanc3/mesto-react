@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -6,19 +6,48 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null); //TODO верно ли дефолтное состояние null? мб пустой объект?
 
+  const [cards, setCards] = useState([]);
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    console.log(currentUser)
+    api.toggleLike(card._id, isLiked)
+    .then((newCard) => {
+      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    })
+    .catch(err => console.log(err));
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+    .then(() => {
+      setCards((state) => state.filter((c) => c._id !== card._id));
+    })
+    .catch(err => console.log(err));
+  }
+
+  useEffect(() => {
+    api.getInitialCards()
+    .then((res) => {
+      setCards(res);
+    })
+    .catch((err) => console.log(`Возникла ошибка: ${err}`));
+  }, []);
+
   useEffect(() => {
     api.getUserInfo()
     .then(res => setCurrentUser({
-      id: res._id,
       name: res.name,
       about: res.about,
-      avatar: res.avatar
+      avatar: res.avatar,
+      _id: res._id
     }))
   }, [] //TODO верная ли тут зависимость? когда происходит обновление юзера?
   )
@@ -103,6 +132,15 @@ function App() {
     .catch(err => console.log(err))
   }
 
+  const handleAddPlaceSubmit = ({ name, link }) => {
+    api.uploadNewCard({ name, link })
+    .then(newCard => {
+      setCards([newCard, ...cards]);
+      closeAllPopups();
+    })
+    .catch(err => console.log(err))
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -112,6 +150,9 @@ function App() {
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
         <Footer />
 
@@ -122,39 +163,12 @@ function App() {
           onUpdateUser={handleUpdateUser}
         />
 
-        <PopupWithForm
-          name="add-card"
-          title="Новое место"
-          buttonContent={"Создать"}
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
-        >
-          <input
-            name="name"
-            id="cardName-input"
-            type="text"
-            className="popup__input-form popup__input-form_type_card-name"
-            placeholder="Название"
-            minLength="2"
-            maxLength="30"
-            required
-          />
-          <div className="popup__input-error-container">
-            <span className="popup__input-error" id="cardName-input-error"></span>
-          </div>
-          <input
-            name="link"
-            id="cardLink-input"
-            type="url"
-            className="popup__input-form popup__input-form_type_card-link"
-            placeholder="Ссылка на картинку"
-            required
-          />
-          <div className="popup__input-error-container">
-            <span className="popup__input-error" id="cardLink-input-error"></span>
-          </div>
-        </PopupWithForm>
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
         <PopupWithForm
           name="confirm"
