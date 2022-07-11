@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -77,6 +78,31 @@ function App() {
     selectedCard,
   ]);
 
+  const handleUpdateUser = ({ name, about }) => {
+    api.setUserInfo({ name, about })
+    .then(res => {
+      setCurrentUser(prevState => ({
+        ...prevState,
+        name: res.name,
+        about: res.about
+      }));
+      closeAllPopups();
+    })
+    .catch(err => console.log(err))
+  }
+
+  const handleUpdateAvatar = ({ avatar }) => {
+    api.changeAvatar({ avatar })
+    .then(res => {
+      setCurrentUser(prevState => ({
+        ...prevState,
+        avatar: res.avatar
+      }));
+      closeAllPopups();
+    })
+    .catch(err => console.log(err))
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -93,6 +119,7 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
+          onUpdateUser={handleUpdateUser}
         />
 
         <PopupWithForm
@@ -137,29 +164,12 @@ function App() {
           onOverlay={handleOverlayClick}
         ></PopupWithForm>
 
-        <PopupWithForm
-          name="change-avatar"
-          title="Обновить аватар"
-          buttonContent={"Сохранить"}
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
-        >
-          <input
-            name="avatar"
-            id="avatarLink-input"
-            type="url"
-            className="popup__input-form popup__input-form_type_avatar-link"
-            placeholder="Ссылка на аватар"
-            required
-          />
-          <div className="popup__input-error-container">
-            <span
-              className="popup__input-error"
-              id="avatarLink-input-error"
-            ></span>
-          </div>
-        </PopupWithForm>
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
         <ImagePopup
           name={selectedCard !== null ? selectedCard.name : ""}

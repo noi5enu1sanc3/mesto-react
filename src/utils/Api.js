@@ -28,12 +28,13 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        about: data.about,
-        avatar: data.avatar
+        about: data.about
       }),
     })
     .then((res) => this._getResponse(res));
   }
+
+
 
   uploadNewCard(data) {
     return fetch(`${this._baseUrl}${this._id}/cards`, {
