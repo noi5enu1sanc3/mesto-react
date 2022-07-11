@@ -2,7 +2,7 @@ import React from "react";
 
 function Card({ card, onCardClick }) {
   const handleClick = () => onCardClick(card);
-  
+
   return (
     <li className="cards__item">
       <button type="button" className="cards__delete-btn" aria-label="Удалить"></button>
