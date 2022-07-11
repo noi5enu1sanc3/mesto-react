@@ -6,14 +6,12 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({
-    isImagePopupOpen: false,
-    name: "",
-    link: "",
-  });
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const handleCardClick = (card) => {
     setSelectedCard({
@@ -33,7 +31,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard({ isImagePopupOpen: false, name: "", link: "" });
+    setSelectedCard(null);
   };
 
   const handleOverlayClick = (evt) => {
@@ -42,18 +40,19 @@ function App() {
     }
   };
 
+  const closeOnEsc = (evt) => {
+    if (evt.key === "Escape") {
+      closeAllPopups();
+    }
+  }
+
   useEffect(() => {
     if (
       isEditAvatarPopupOpen === true ||
       isEditProfilePopupOpen === true ||
       isAddPlacePopupOpen === true ||
-      selectedCard.isImagePopupOpen === true
+      selectedCard !== null && selectedCard.isImagePopupOpen === true
     ) {
-      const closeOnEsc = (evt) => {
-        if (evt.key === "Escape") {
-          closeAllPopups();
-        }
-      };
       document.addEventListener("keydown", closeOnEsc);
       return () => document.removeEventListener("keydown", closeOnEsc);
     }
@@ -61,7 +60,7 @@ function App() {
     isEditAvatarPopupOpen,
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
-    selectedCard.isImagePopupOpen,
+    selectedCard
   ]);
 
   return (
@@ -177,9 +176,9 @@ function App() {
       </PopupWithForm>
 
       <ImagePopup
-        name={selectedCard.name}
-        link={selectedCard.link}
-        isOpen={selectedCard.isImagePopupOpen}
+        name={selectedCard !== null ? selectedCard.name : ''}
+        link={selectedCard !== null ? selectedCard.link : ''}
+        isOpen={selectedCard !== null ? selectedCard.isImagePopupOpen : ''}
         onClose={closeAllPopups}
         onOverlay={handleOverlayClick}
       />
