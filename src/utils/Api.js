@@ -56,7 +56,6 @@ class Api {
   }
 
   toggleLike(cardId, isLiked) {
-    alert(isLiked)
     if (isLiked === false) {
       return fetch(`${this._baseUrl}${this._id}/cards/${cardId}/likes`, {
         method: "PUT",
