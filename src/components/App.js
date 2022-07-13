@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
+import ConfirmationPopup from "./ConfirmationPopup";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -55,6 +55,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
   const handleCardClick = (card) => {
@@ -71,10 +72,13 @@ function App() {
 
   const handleAddPlaceClick = () => setIsAddPlacePopupOpen(true);
 
+  const hadleCardDeleteClick = () => setIsConfirmationPopupOpen(true);
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsConfirmationPopupOpen(false);
     setSelectedCard(null);
   };
 
@@ -95,6 +99,7 @@ function App() {
       isEditAvatarPopupOpen === true ||
       isEditProfilePopupOpen === true ||
       isAddPlacePopupOpen === true ||
+      isConfirmationPopupOpen === true ||
       (selectedCard !== null && selectedCard.isImagePopupOpen === true)
     ) {
       document.addEventListener("keydown", closeOnEsc);
@@ -104,6 +109,7 @@ function App() {
     isEditAvatarPopupOpen,
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
+    isConfirmationPopupOpen,
     selectedCard,
   ]);
 
@@ -152,7 +158,8 @@ function App() {
           onCardClick={handleCardClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          // onCardDelete={handleCardDelete}
+          onCardDelete={hadleCardDeleteClick}
         />
         <Footer />
 
@@ -170,13 +177,11 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
         />
 
-        <PopupWithForm
-          name="confirm"
-          title="Вы уверены?"
-          buttonContent={"Да"}
+        <ConfirmationPopup 
+          isOpen={isConfirmationPopupOpen}
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
-        ></PopupWithForm>
+        />
 
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
