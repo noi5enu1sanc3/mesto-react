@@ -15,6 +15,8 @@ function App() {
 
   const [cards, setCards] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.toggleLike(card._id, isLiked)
@@ -25,12 +27,14 @@ function App() {
   }
 
   function handleCardDelete(id) {
+    setIsLoading(true);
     api.deleteCard(id)
     .then(() => {
       setCards((state) => state.filter((c) => c._id !== id));
       closeAllPopups();
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
@@ -119,6 +123,7 @@ function App() {
   ]);
 
   const handleUpdateUser = ({ name, about }) => {
+    setIsLoading(true);
     api.setUserInfo({ name, about })
     .then(res => {
       setCurrentUser(prevState => ({
@@ -129,9 +134,11 @@ function App() {
       closeAllPopups();
     })
     .catch(err => console.log(err))
+    .finally(() => setIsLoading(false));
   }
 
   const handleUpdateAvatar = ({ avatar }) => {
+    setIsLoading(true);
     api.changeAvatar({ avatar })
     .then(res => {
       setCurrentUser(prevState => ({
@@ -141,15 +148,18 @@ function App() {
       closeAllPopups();
     })
     .catch(err => console.log(err))
+    .finally(() => setIsLoading(false));
   }
 
   const handleAddPlaceSubmit = ({ name, link }) => {
+    setIsLoading(true);
     api.uploadNewCard({ name, link })
     .then(newCard => {
       setCards([newCard, ...cards]);
       closeAllPopups();
     })
     .catch(err => console.log(err))
+    .finally(() => setIsLoading(false));
   }
 
   return (
@@ -172,6 +182,7 @@ function App() {
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
           onUpdateUser={handleUpdateUser}
+          isLoading={isLoading}
         />
 
         <AddPlacePopup
@@ -179,6 +190,7 @@ function App() {
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
           onAddPlace={handleAddPlaceSubmit}
+          isLoading={isLoading}
         />
 
         <ConfirmationPopup 
@@ -187,6 +199,7 @@ function App() {
           onOverlay={handleOverlayClick}
           onCardDelete={handleCardDelete}
           cardId={cardToDelete !== null ? cardToDelete.id : ""}
+          isLoading={isLoading}
         />
 
         <EditAvatarPopup
@@ -194,6 +207,7 @@ function App() {
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
           onUpdateAvatar={handleUpdateAvatar}
+          isLoading={isLoading}
         />
 
         <ImagePopup

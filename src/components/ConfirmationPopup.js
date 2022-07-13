@@ -1,6 +1,6 @@
 import PopupWithForm from "./PopupWithForm";
 
-function ConfirmationPopup({ isOpen, onClose, onOverlay, onCardDelete, cardId }) {
+function ConfirmationPopup({ isOpen, onClose, onOverlay, onCardDelete, cardId, isLoading }) {
   function handleSubmit(evt) {
     evt.preventDefault();
 
@@ -11,12 +11,13 @@ function ConfirmationPopup({ isOpen, onClose, onOverlay, onCardDelete, cardId })
     <PopupWithForm
       name="confirm"
       title="Вы уверены?"
-      buttonContent={"Да"}
+      buttonContent={!isLoading ? "Да" : "Удаление..."}
       isOpen={isOpen}
       onClose={onClose}
       onOverlay={onOverlay}
       onSubmit={handleSubmit}
       cardId={cardId}
+      isLoading={isLoading}
     ></PopupWithForm>
   )
 }
