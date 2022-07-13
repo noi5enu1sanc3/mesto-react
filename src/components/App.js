@@ -52,7 +52,9 @@ function App() {
       about: res.about,
       avatar: res.avatar,
       _id: res._id
-    }))
+    })
+    )
+    .catch((err) => console.log(`Возникла ошибка: ${err}`));
   }, []
   )
 
