@@ -29,9 +29,9 @@ function EditAvatarPopup({ isOpen, onClose, onOverlay, onUpdateAvatar, isLoading
     if (isOpen) {
       avatarRef.current.value = "";
       setAvatarInputError("");
-      avatarRef.current.focus();
+      setTimeout(() => avatarRef.current.focus(), 100);
     }
-  }, [isOpen]);//TODO focus not working, why?
+  }, [isOpen]);
 
   return (
     <PopupWithForm
