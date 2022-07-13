@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
+import ConfirmationPopup from "./ConfirmationPopup";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -17,7 +17,6 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    console.log(currentUser)
     api.toggleLike(card._id, isLiked)
     .then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -25,10 +24,11 @@ function App() {
     .catch(err => console.log(err));
   }
 
-  function handleCardDelete(card) {
-    api.deleteCard(card._id)
+  function handleCardDelete(id) {
+    api.deleteCard(id)
     .then(() => {
-      setCards((state) => state.filter((c) => c._id !== card._id));
+      setCards((state) => state.filter((c) => c._id !== id));
+      closeAllPopups();
     })
     .catch(err => console.log(err));
   }
@@ -56,6 +56,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [cardToDelete, setCardToDelete] = useState(null);
 
   const handleCardClick = (card) => {
     setSelectedCard({
@@ -64,6 +65,13 @@ function App() {
       link: card.link,
     });
   };
+
+  const hadleCardDeleteClick = (card) => {
+    setCardToDelete({
+      isConfirmationPopupOpen: true,
+      id: card._id
+    })
+  }
 
   const handleEditAvatarClick = () => setIsEditAvatarPopupOpen(true);
 
@@ -75,6 +83,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setCardToDelete(null);
     setSelectedCard(null);
   };
 
@@ -95,6 +104,7 @@ function App() {
       isEditAvatarPopupOpen === true ||
       isEditProfilePopupOpen === true ||
       isAddPlacePopupOpen === true ||
+      (cardToDelete !== null && cardToDelete.isConfirmationPopupOpen === true) ||
       (selectedCard !== null && selectedCard.isImagePopupOpen === true)
     ) {
       document.addEventListener("keydown", closeOnEsc);
@@ -104,6 +114,7 @@ function App() {
     isEditAvatarPopupOpen,
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
+    cardToDelete,
     selectedCard,
   ]);
 
@@ -152,7 +163,7 @@ function App() {
           onCardClick={handleCardClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onCardDelete={hadleCardDeleteClick}
         />
         <Footer />
 
@@ -170,13 +181,13 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
         />
 
-        <PopupWithForm
-          name="confirm"
-          title="Вы уверены?"
-          buttonContent={"Да"}
+        <ConfirmationPopup 
+          isOpen={cardToDelete !== null ? cardToDelete.isConfirmationPopupOpen : ""}
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
-        ></PopupWithForm>
+          onCardDelete={handleCardDelete}
+          cardId={cardToDelete !== null ? cardToDelete.id : ""}
+        />
 
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
