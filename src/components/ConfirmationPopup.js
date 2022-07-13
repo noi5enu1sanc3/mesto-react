@@ -1,10 +1,10 @@
 import PopupWithForm from "./PopupWithForm";
 
-function ConfirmationPopup({ isOpen, onClose, onOverlay, onCardDelete }) {
+function ConfirmationPopup({ isOpen, onClose, onOverlay, onCardDelete, cardId }) {
   function handleSubmit(evt) {
     evt.preventDefault();
 
-    onCardDelete()
+    onCardDelete(cardId);
   }
 
   return (
@@ -16,6 +16,7 @@ function ConfirmationPopup({ isOpen, onClose, onOverlay, onCardDelete }) {
       onClose={onClose}
       onOverlay={onOverlay}
       onSubmit={handleSubmit}
+      cardId={cardId}
     ></PopupWithForm>
   )
 }
