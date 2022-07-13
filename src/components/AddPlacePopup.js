@@ -1,16 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
 
+  const [isTitleInputValid, setIsTitleInputValid] = useState(false);
+  const [isLinkInputValid, setIsLinkInputValid] = useState(false);
+
+  const [titleInputError, setTitleInputError] = useState("");
+  const [linkInputError, setLinkInputError] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      setTitleInputError("");
+      setLinkInputError("");
+      setTitle("");
+      setLink("");
+    }
+  }, [isOpen])
+
   function handleTitleChange(evt) {
     setTitle(evt.target.value);
+    setIsTitleInputValid(evt.target.validity.valid);
+    if (!isTitleInputValid) {
+      setTitleInputError(evt.target.validationMessage)
+    } else {
+      setTitleInputError("")
+    }
   }
 
   function handleLinkChange(evt) {
     setLink(evt.target.value);
+    setIsLinkInputValid(evt.target.validity.valid);
+    if (!isLinkInputValid) {
+      setLinkInputError(evt.target.validationMessage)
+    } else {
+      setLinkInputError("")
+    }
   }
 
   function handleSubmit(evt) {
@@ -34,6 +61,7 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
       onOverlay={onOverlay}
       onSubmit={handleSubmit}
       isLoading={isLoading}
+      isButtonEnabled={isTitleInputValid && isLinkInputValid}
     >
       <input
         onChange={handleTitleChange}
@@ -48,7 +76,7 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
         required
       />
       <div className="popup__input-error-container">
-        <span className="popup__input-error" id="cardName-input-error"></span>
+        <span className="popup__input-error" id="cardName-input-error">{titleInputError}</span>
       </div>
       <input
         onChange={handleLinkChange}
@@ -61,7 +89,7 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
         required
       />
       <div className="popup__input-error-container">
-        <span className="popup__input-error" id="cardLink-input-error"></span>
+        <span className="popup__input-error" id="cardLink-input-error">{linkInputError}</span>
       </div>
     </PopupWithForm>
   );
