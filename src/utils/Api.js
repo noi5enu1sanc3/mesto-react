@@ -28,12 +28,13 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        about: data.about,
-        avatar: data.avatar
+        about: data.about
       }),
     })
     .then((res) => this._getResponse(res));
   }
+
+
 
   uploadNewCard(data) {
     return fetch(`${this._baseUrl}${this._id}/cards`, {
@@ -55,20 +56,20 @@ class Api {
     .then(res => this._getResponse(res));
   }
 
-  addLike(cardId) {
-    return fetch(`${this._baseUrl}${this._id}/cards/${cardId}/likes`, {
-      method: "PUT",
-      headers: this._headers
-    })
-    .then(res => this._getResponse(res));
-  }
-
-  removeLike(cardId) {
-    return fetch(`${this._baseUrl}${this._id}/cards/${cardId}/likes`, {
-      method: "DELETE",
-      headers: this._headers
-    })
-    .then(res => this._getResponse(res));
+  toggleLike(cardId, isLiked) {
+    if (isLiked === false) {
+      return fetch(`${this._baseUrl}${this._id}/cards/${cardId}/likes`, {
+        method: "PUT",
+        headers: this._headers
+      })
+      .then(res => this._getResponse(res));
+    } else {
+      return fetch(`${this._baseUrl}${this._id}/cards/${cardId}/likes`, {
+        method: "DELETE",
+        headers: this._headers
+      })
+      .then(res => this._getResponse(res));
+    }
   }
 
   changeAvatar(data) {

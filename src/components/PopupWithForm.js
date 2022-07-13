@@ -1,10 +1,17 @@
-function PopupWithForm({ name, isOpen, title, onClose, onOverlay, children, buttonContent }) {
-
+function PopupWithForm({
+  name,
+  isOpen,
+  title,
+  onClose,
+  onOverlay,
+  onSubmit,
+  children,
+  buttonContent,
+  isButtonEnabled
+}) {
   return (
     <section
-      className={`popup popup_role_${name} ${
-        isOpen && "popup_status_show"
-      }`}
+      className={`popup popup_role_${name} ${isOpen && "popup_status_show"}`}
       onClick={onOverlay}
     >
       <div className="popup__container">
@@ -12,9 +19,11 @@ function PopupWithForm({ name, isOpen, title, onClose, onOverlay, children, butt
         <form
           name={name}
           className="popup__form"
-          noValidate>
+          onSubmit={onSubmit}
+          noValidate
+        >
           {children}
-          <button type="submit" className="popup__save-btn">
+          <button type="submit" className={`popup__save-btn ${isButtonEnabled ? "" : "popup__save-btn_disabled"}`} disabled={!isButtonEnabled}>
             {buttonContent}
           </button>
         </form>
