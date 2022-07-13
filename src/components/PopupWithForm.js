@@ -7,6 +7,7 @@ function PopupWithForm({
   onSubmit,
   children,
   buttonContent,
+  isButtonEnabled
 }) {
   return (
     <section
@@ -22,7 +23,7 @@ function PopupWithForm({
           noValidate
         >
           {children}
-          <button type="submit" className="popup__save-btn">
+          <button type="submit" className={`popup__save-btn ${isButtonEnabled ? "" : "popup__save-btn_disabled"}`} disabled={!isButtonEnabled}>
             {buttonContent}
           </button>
         </form>

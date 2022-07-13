@@ -1,17 +1,37 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function EditAvatarPopup({ isOpen, onClose, onOverlay, onUpdateAvatar, isLoading }) {
   const avatarRef = useRef();
 
+  const [avatarInputError, setAvatarInputError] = useState("");
+
   function handleSubmit(evt) {
     evt.preventDefault();
-  
-    onUpdateAvatar({
-      avatar: avatarRef.current.value
-    });
-    avatarRef.current.value = "";
+    if (handleValidation() === true) {
+
+      onUpdateAvatar({
+        avatar: avatarRef.current.value
+      });
+      avatarRef.current.value = "";
+    } else {
+      setAvatarInputError("Please enter url")
+    }
   }
+
+  function handleValidation() {
+    if (avatarRef.current.value.length > 0 && avatarRef.current.validity.valid) {
+      return true
+    }
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      avatarRef.current.value = "";
+      setAvatarInputError("");
+      avatarRef.current.focus();
+    }
+  }, [isOpen]);//TODO focus not working, why?
 
   return (
     <PopupWithForm
@@ -23,6 +43,7 @@ function EditAvatarPopup({ isOpen, onClose, onOverlay, onUpdateAvatar, isLoading
           onOverlay={onOverlay}
           onSubmit={handleSubmit}
           isLoading={isLoading}
+          isButtonEnabled={true}
         >
           <input
             ref={avatarRef}
@@ -37,7 +58,7 @@ function EditAvatarPopup({ isOpen, onClose, onOverlay, onUpdateAvatar, isLoading
             <span
               className="popup__input-error"
               id="avatarLink-input-error"
-            ></span>
+            >{avatarInputError}</span>
           </div>
         </PopupWithForm>
   )

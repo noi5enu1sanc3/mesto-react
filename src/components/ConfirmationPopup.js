@@ -18,6 +18,7 @@ function ConfirmationPopup({ isOpen, onClose, onOverlay, onCardDelete, cardId, i
       onSubmit={handleSubmit}
       cardId={cardId}
       isLoading={isLoading}
+      isButtonEnabled={true}
     ></PopupWithForm>
   )
 }

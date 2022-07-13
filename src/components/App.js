@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -11,7 +11,7 @@ import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null); //TODO верно ли дефолтное состояние null? мб пустой объект?
+  const [currentUser, setCurrentUser] = useState(null); //TODO уточнить верно ли дефолтное состояние null? мб пустой объект?
 
   const [cards, setCards] = useState([]);
 
@@ -53,7 +53,7 @@ function App() {
       avatar: res.avatar,
       _id: res._id
     }))
-  }, [] //TODO верная ли тут зависимость? когда происходит обновление юзера?
+  }, []
   )
 
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);

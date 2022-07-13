@@ -71,22 +71,6 @@ class Api {
       .then(res => this._getResponse(res));
     }
   }
-  //TODO remove methods
-  // addLike(cardId) {
-  //   return fetch(`${this._baseUrl}${this._id}/cards/${cardId}/likes`, {
-  //     method: "PUT",
-  //     headers: this._headers
-  //   })
-  //   .then(res => this._getResponse(res));
-  // }
-
-  // removeLike(cardId) {
-  //   return fetch(`${this._baseUrl}${this._id}/cards/${cardId}/likes`, {
-  //     method: "DELETE",
-  //     headers: this._headers
-  //   })
-  //   .then(res => this._getResponse(res));
-  // }
 
   changeAvatar(data) {
     return fetch(`${this._baseUrl}${this._id}/users/me/avatar`, {
