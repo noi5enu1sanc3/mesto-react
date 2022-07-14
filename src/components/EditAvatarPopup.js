@@ -29,7 +29,7 @@ function EditAvatarPopup({ isOpen, onClose, onOverlay, onUpdateAvatar, isLoading
     if (isOpen) {
       avatarRef.current.value = "";
       setAvatarInputError("");
-      setTimeout(() => avatarRef.current.focus(), 100);
+      setTimeout(() => avatarRef.current.focus(), 50);
     }
   }, [isOpen]);
 
