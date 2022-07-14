@@ -11,7 +11,7 @@ import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null); //TODO уточнить верно ли дефолтное состояние null? мб пустой объект?
+  const [currentUser, setCurrentUser] = useState(null);
 
   const [cards, setCards] = useState([]);
 

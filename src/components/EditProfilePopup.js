@@ -33,7 +33,7 @@ function EditProfilePopup({ isOpen, onClose, onOverlay, onUpdateUser, isLoading 
       setDescriptionInputError("")
     }
   }
-
+  
   useEffect(() => {
     if ((currentUser !== null) && isOpen) {
       setName(currentUser.name);
