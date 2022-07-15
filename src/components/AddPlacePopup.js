@@ -6,9 +6,6 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation();
 
-  const name = values.name;
-  const link = values.link;
-
   useEffect(() => {
     if (isOpen) {
       resetForm();
@@ -34,7 +31,7 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
     >
       <input
         onChange={handleChange}
-        value={name}
+        value={values.name || ''}
         name="name"
         id="cardName-input"
         type="text"
@@ -51,7 +48,7 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
       </div>
       <input
         onChange={handleChange}
-        value={link}
+        value={values.link || ''} 
         name="link"
         id="cardLink-input"
         type="url"

@@ -15,20 +15,17 @@ function EditProfilePopup({
   const { values, handleChange, errors, isValid, setValues, resetForm } =
     useFormAndValidation();
 
-  const name = values.name;
-  const description = values.description;
-
   useEffect(() => {
     if (currentUser !== null && isOpen) {
       resetForm();
-      setValues({ name: currentUser.name, description: currentUser.about });
+      setValues({ name: currentUser.name, about: currentUser.about });
     }
   }, [currentUser, isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
 
-    onUpdateUser({ name, about: description });
+    onUpdateUser(values);
   }
 
   return (
@@ -45,7 +42,7 @@ function EditProfilePopup({
     >
       <input
         onChange={handleChange}
-        value={currentUser !== null ? name : ""}
+        value={values.name || ""}
         name="name"
         id="username-input"
         type="text"
@@ -62,7 +59,7 @@ function EditProfilePopup({
       </div>
       <input
         onChange={handleChange}
-        value={currentUser !== null ? description : ""}
+        value={values.about || ""}
         name="about"
         id="userinfo-input"
         type="text"
@@ -74,7 +71,7 @@ function EditProfilePopup({
       />
       <div className="popup__input-error-container">
         <span className="popup__input-error" id="userinfo-input-error">
-          {errors.description}
+          {errors.about}
         </span>
       </div>
     </PopupWithForm>
