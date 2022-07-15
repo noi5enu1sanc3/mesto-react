@@ -47,13 +47,7 @@ function App() {
 
   useEffect(() => {
     api.getUserInfo()
-    .then(res => setCurrentUser({
-      name: res.name,
-      about: res.about,
-      avatar: res.avatar,
-      _id: res._id
-    })
-    )
+    .then(res => setCurrentUser(res))
     .catch((err) => console.log(`Возникла ошибка: ${err}`));
   }, []
   )
@@ -99,30 +93,21 @@ function App() {
     }
   };
 
-  const closeOnEsc = (evt) => {
-    if (evt.key === "Escape") {
-      closeAllPopups();
-    }
-  };
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard;
 
   useEffect(() => {
-    if (
-      isEditAvatarPopupOpen === true ||
-      isEditProfilePopupOpen === true ||
-      isAddPlacePopupOpen === true ||
-      (cardToDelete !== null && cardToDelete.isConfirmationPopupOpen === true) ||
-      (selectedCard !== null && selectedCard.isImagePopupOpen === true)
-    ) {
-      document.addEventListener("keydown", closeOnEsc);
-      return () => document.removeEventListener("keydown", closeOnEsc);
+    function closeByEscape(evt) {
+      if(evt.key === 'Escape') {
+        closeAllPopups();
+      }
     }
-  }, [
-    isEditAvatarPopupOpen,
-    isEditProfilePopupOpen,
-    isAddPlacePopupOpen,
-    cardToDelete,
-    selectedCard,
-  ]);
+    if(isOpen) {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
+    }
+  }, [isOpen]);
 
   const handleUpdateUser = ({ name, about }) => {
     setIsLoading(true);
