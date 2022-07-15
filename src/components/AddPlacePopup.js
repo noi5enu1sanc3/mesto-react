@@ -1,54 +1,23 @@
 import React, { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
-  const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation();
 
-  const [isTitleInputValid, setIsTitleInputValid] = useState(false);
-  const [isLinkInputValid, setIsLinkInputValid] = useState(false);
-
-  const [titleInputError, setTitleInputError] = useState("");
-  const [linkInputError, setLinkInputError] = useState("");
+  const name = values.name;
+  const link = values.link;
 
   useEffect(() => {
     if (isOpen) {
-      setTitleInputError("");
-      setLinkInputError("");
-      setTitle("");
-      setLink("");
+      resetForm();
     }
-  }, [isOpen])
-
-  function handleTitleChange(evt) {
-    setTitle(evt.target.value);
-    setIsTitleInputValid(evt.target.validity.valid);
-    if (!isTitleInputValid) {
-      setTitleInputError(evt.target.validationMessage)
-    } else {
-      setTitleInputError("")
-    }
-  }
-
-  function handleLinkChange(evt) {
-    setLink(evt.target.value);
-    setIsLinkInputValid(evt.target.validity.valid);
-    if (!isLinkInputValid) {
-      setLinkInputError(evt.target.validationMessage)
-    } else {
-      setLinkInputError("")
-    }
-  }
+  }, [isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-
-    onAddPlace({
-      link,
-      name: title
-    });
-    setTitle("");
-    setLink("");
+    onAddPlace(values);
   }
 
   return (
@@ -61,11 +30,11 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
       onOverlay={onOverlay}
       onSubmit={handleSubmit}
       isLoading={isLoading}
-      isButtonEnabled={isTitleInputValid && isLinkInputValid}
+      isButtonEnabled={isValid}
     >
       <input
-        onChange={handleTitleChange}
-        value={title}
+        onChange={handleChange}
+        value={name}
         name="name"
         id="cardName-input"
         type="text"
@@ -76,10 +45,12 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
         required
       />
       <div className="popup__input-error-container">
-        <span className="popup__input-error" id="cardName-input-error">{titleInputError}</span>
+        <span className="popup__input-error" id="cardName-input-error">
+          {errors.name}
+        </span>
       </div>
       <input
-        onChange={handleLinkChange}
+        onChange={handleChange}
         value={link}
         name="link"
         id="cardLink-input"
@@ -89,7 +60,9 @@ function AddPlacePopup({ isOpen, onClose, onOverlay, onAddPlace, isLoading }) {
         required
       />
       <div className="popup__input-error-container">
-        <span className="popup__input-error" id="cardLink-input-error">{linkInputError}</span>
+        <span className="popup__input-error" id="cardLink-input-error">
+          {errors.link}
+        </span>
       </div>
     </PopupWithForm>
   );

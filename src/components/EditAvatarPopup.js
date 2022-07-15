@@ -13,7 +13,6 @@ function EditAvatarPopup({ isOpen, onClose, onOverlay, onUpdateAvatar, isLoading
       onUpdateAvatar({
         avatar: avatarRef.current.value
       });
-      avatarRef.current.value = "";
     } else {
       setAvatarInputError("Please enter url")
     }
