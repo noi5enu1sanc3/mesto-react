@@ -54,38 +54,7 @@
 @import url(./blocks/popup/__input-error/popup__input-error.css);
 @import url(./blocks/popup/__input-error-container/popup__input-error-container.css);
 @import url(./blocks/popup/__input-form/_type/popup__input-form_type_error.css);
-
-.popup__likes-avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.popup__likes-user {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: .8px solid #000;
-}
-
-.popup__likes-user:last-of-type {
-  border: none;
-  padding-bottom: 0;
-}
-
-.popup__likes-user:first-of-type {
-  padding-top: 0;
-}
-
-.popup__likes-name {
-  color: #000;
-  font-size: 24px;
-  margin: 0;
-}
-
-.popup__liked-by-container {
-  max-height: 70vh;
-  overflow-y: scroll;
-}
+@import url(./blocks/popup/__likes-avatar/popup__likes-avatar.css);
+@import url(./blocks/popup/__likes-user/popup__likes-user.css);
+@import url(./blocks/popup/__likes-name/popup__likes-name.css);
+@import url(./blocks/popup/__liked-by-container/popup__liked-by-container.css);

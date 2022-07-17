@@ -24,7 +24,9 @@ function Card({
   }`;
 
   const handleClick = () => onCardClick(card);
-  const handleLikeClick = () => onCardLike(card);
+  const handleLikeClick = () =>  {
+    console.log('like clicked')
+    onCardLike(card);}
   const handleDeleteClick = () => onCardDelete(card);
   const handleLikeCounterClick = (evt) =>
     evt.target !== evt.target.closest(".cards__like-btn") &&
@@ -35,7 +37,7 @@ function Card({
     onCardLikeCounter(card);
   };
   const defaultOptions = {
-    isPreventDefault: true,
+    isPreventDefault: false,
     delay: 300
   };
   const longPressEvent = useLongPress(handleLongPress, defaultOptions);
