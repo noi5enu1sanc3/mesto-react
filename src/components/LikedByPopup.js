@@ -20,7 +20,7 @@ function LikedByPopup({ isOpen, onOverlay, likes }) {
          </div>
         )) 
         }
-       { likes === null && "Be the first one to like this post ♡(>ᴗ•)"}
+       {(likes && likes.length === 0) && "Be the first one to like this post ♡(>ᴗ•)"}
       </div>
 
     </section>
