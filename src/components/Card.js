@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useLongPress } from "react-use";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Card({
@@ -6,7 +7,7 @@ function Card({
   onCardClick,
   onCardLike,
   onCardDelete,
-  onCardLikeCounter,
+  onCardLikeCounter
 }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -29,6 +30,16 @@ function Card({
     evt.target !== evt.target.closest(".cards__like-btn") &&
     onCardLikeCounter(card);
 
+  const handleLongPress = () => {
+    console.log("long pressed");
+    onCardLikeCounter(card);
+  };
+  const defaultOptions = {
+    isPreventDefault: true,
+    delay: 300
+  };
+  const longPressEvent = useLongPress(handleLongPress, defaultOptions);
+
   return (
     <li className="cards__item">
       <button
@@ -45,7 +56,7 @@ function Card({
       />
       <div className="cards__info">
         <h2 className="cards__caption">{card.name}</h2>
-        <div className="cards__like-element" onClick={handleLikeCounterClick}>
+        <div className="cards__like-element" onClick={handleLikeCounterClick} {...longPressEvent}>
           <button
             type="button"
             className={cardLikeButtonClassName}
