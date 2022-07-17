@@ -43,7 +43,7 @@ function Card({
   const longPressEvent = useLongPress(handleLongPress, defaultOptions);
 
   return (
-    <li className="cards__item">
+    <li className="cards__item" onContextMenu={(e)=> e.preventDefault()}>
       <button
         type="button"
         className={cardDeleteButtonClassName}
@@ -56,16 +56,17 @@ function Card({
         src={card.link}
         onClick={handleClick}
       />
-      <div className="cards__info">
+      <div className="cards__info" onContextMenu={(e)=> e.preventDefault()}>
         <h2 className="cards__caption">{card.name}</h2>
-        <div className="cards__like-element" onClick={handleLikeCounterClick} {...longPressEvent}>
+        <div className="cards__like-element" onClick={handleLikeCounterClick} {...longPressEvent} onContextMenu={(e)=> e.preventDefault()}>
           <button
             type="button"
             className={cardLikeButtonClassName}
             aria-label="Нравится"
             onClick={handleLikeClick}
+            onContextMenu={(e)=> e.preventDefault()}
           ></button>
-          <p className="cards__like-count">{card.likes.length}</p>
+          <p className="cards__like-count" onContextMenu={(e)=> e.preventDefault()}>{card.likes.length}</p>
         </div>
       </div>
     </li>

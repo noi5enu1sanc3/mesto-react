@@ -8,6 +8,7 @@ function LikedByPopup({ isOpen, onOverlay, likes }) {
     <section
       className={`popup popup_style_liked-by ${isOpen && "popup_status_show"}`}
       onClick={onOverlay}
+      onContextMenu={(e)=> e.preventDefault()}
     >
       <div className="popup__container popup__liked-by-container">
        {(likes && likes.length > 0) && Array.from(likes).map((like) => (
