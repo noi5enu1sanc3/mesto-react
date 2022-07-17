@@ -56,27 +56,28 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [selectedLikes, setSelectedLikes] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [cardToDelete, setCardToDelete] = useState(null);
 
-  const handleCardLikeCounterClick = (card) => {
-    setSelectedLikes({
+  const handleCardLikeCounterClick = (card, values) => {
+    setSelectedCard({
+      ...values,
       isLikedByPopupOpen: true,
       likes: card.likes
     });
   };
 
-  const handleCardClick = (card) => {
+  const handleCardClick = (card, values) => {
     setSelectedCard({
+      ...values,
       isImagePopupOpen: true,
       name: card.name,
       link: card.link,
     });
   };
 
-  const hadleCardDeleteClick = (card) => {
-    setCardToDelete({
+  const hadleCardDeleteClick = (card, values) => {
+    setSelectedCard({
+      ...values,
       isConfirmationPopupOpen: true,
       id: card._id
     })
@@ -92,9 +93,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setCardToDelete(null);
     setSelectedCard(null);
-    setSelectedLikes(null)
   };
 
   const handleOverlayClick = (evt) => {
@@ -103,7 +102,7 @@ function App() {
     }
   };
 
-  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard || selectedLikes;
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard;
 
   useEffect(() => {
     function closeByEscape(evt) {
@@ -192,11 +191,11 @@ function App() {
         />
 
         <ConfirmationPopup 
-          isOpen={cardToDelete !== null ? cardToDelete.isConfirmationPopupOpen : ""}
+          isOpen={selectedCard !== null ? selectedCard.isConfirmationPopupOpen : ""}
           onClose={closeAllPopups}
           onOverlay={handleOverlayClick}
           onCardDelete={handleCardDelete}
-          cardId={cardToDelete !== null ? cardToDelete.id : ""}
+          cardId={selectedCard !== null ? selectedCard.id : ""}
           isLoading={isLoading}
         />
 
@@ -217,9 +216,9 @@ function App() {
         />
 
         <LikedByPopup
-          isOpen={selectedLikes !== null ? selectedLikes.isLikedByPopupOpen : ""}
+          isOpen={selectedCard !== null ? selectedCard.isLikedByPopupOpen : ""}
           onClose={closeAllPopups}
-          likes={selectedLikes !== null ? selectedLikes.likes : ""}
+          likes={selectedCard !== null ? selectedCard.likes : ""}
           onOverlay={handleOverlayClick}
         />
       </div>

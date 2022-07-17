@@ -10,7 +10,7 @@ function LikedByPopup({ isOpen, onOverlay, likes }) {
       onClick={onOverlay}
     >
       <div className="popup__container popup__liked-by-container">
-       {likes.length > 0 ? Array.from(likes).map((like) => (
+       {(likes && likes.length > 0) && Array.from(likes).map((like) => (
          <div className="popup__likes-user" key={like._id}>
            <img className="popup__likes-avatar"
             src={like.avatar}
@@ -18,8 +18,9 @@ function LikedByPopup({ isOpen, onOverlay, likes }) {
           <p className="popup__likes-name"
           >{like._id === currentUser._id ? "You" : like.name}</p>
          </div>
-        )) : "Be the first one to like this post ♡(>ᴗ•)"
+        )) 
         }
+       { likes === null && "Be the first one to like this post ♡(>ᴗ•)"}
       </div>
 
     </section>

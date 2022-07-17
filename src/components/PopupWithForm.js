@@ -11,7 +11,7 @@ function PopupWithForm({
 }) {
   return (
     <section
-      className={`popup popup_role_${name} ${isOpen && "popup_status_show"}`}
+      className={`popup popup_role_${name} ${isOpen ? "popup_status_show" : ''}`}
       onClick={onOverlay}
     >
       <div className="popup__container">
