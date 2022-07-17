@@ -9,6 +9,7 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import LikedByPopup from "./LikedByPopup";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -55,8 +56,16 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [selectedLikes, setSelectedLikes] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
+
+  const handleCardLikeCounterClick = (card) => {
+    setSelectedLikes({
+      isLikedByPopupOpen: true,
+      likes: card.likes
+    });
+  };
 
   const handleCardClick = (card) => {
     setSelectedCard({
@@ -85,6 +94,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setCardToDelete(null);
     setSelectedCard(null);
+    setSelectedLikes(null)
   };
 
   const handleOverlayClick = (evt) => {
@@ -93,7 +103,7 @@ function App() {
     }
   };
 
-  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard;
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard || selectedLikes;
 
   useEffect(() => {
     function closeByEscape(evt) {
@@ -161,6 +171,7 @@ function App() {
           cards={cards}
           onCardLike={handleCardLike}
           onCardDelete={hadleCardDeleteClick}
+          onCardLikeCounter={handleCardLikeCounterClick}
         />
         <Footer />
 
@@ -202,6 +213,13 @@ function App() {
           link={selectedCard !== null ? selectedCard.link : ""}
           isOpen={selectedCard !== null ? selectedCard.isImagePopupOpen : ""}
           onClose={closeAllPopups}
+          onOverlay={handleOverlayClick}
+        />
+
+        <LikedByPopup
+          isOpen={selectedLikes !== null ? selectedLikes.isLikedByPopupOpen : ""}
+          onClose={closeAllPopups}
+          likes={selectedLikes !== null ? selectedLikes.likes : ""}
           onOverlay={handleOverlayClick}
         />
       </div>
