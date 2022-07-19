@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
-import { useLongPress } from "react-use";
+import useLongPress from "../hooks/useLongPress";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({
-  card,
-  onCardClick,
-  onCardLike,
-  onCardDelete,
-  onCardLikeCounter
-}) {
+function Card({ card, onCardClick, onCardLike, onCardDelete, onShowLikedBy }) {
   const currentUser = useContext(CurrentUserContext);
+
+  const { handlers: likeButtonHandlers } = useLongPress({
+    onLongPress: () => onShowLikedBy(card),
+    onClick: () => handleLikeClick(),
+  });
 
   const isOwn = card.owner._id === currentUser._id;
 
@@ -20,30 +19,21 @@ function Card({
   const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
   const cardLikeButtonClassName = `cards__like-btn ${
-    isLiked ? "cards__like-btn_status_active" : ""
+    isLiked ? "cards__like-btn_status_active" : "" 
   }`;
 
   const handleClick = () => onCardClick(card);
-  const handleLikeClick = () =>  {
-    console.log('like clicked')
-    onCardLike(card);}
+
+  const handleLikeClick = () => onCardLike(card);
+
   const handleDeleteClick = () => onCardDelete(card);
+
   const handleLikeCounterClick = (evt) =>
     evt.target !== evt.target.closest(".cards__like-btn") &&
-    onCardLikeCounter(card);
-
-  const handleLongPress = () => {
-    console.log("long pressed");
-    onCardLikeCounter(card);
-  };
-  const defaultOptions = {
-    isPreventDefault: false,
-    delay: 300
-  };
-  const longPressEvent = useLongPress(handleLongPress, defaultOptions);
+    onShowLikedBy(card);
 
   return (
-    <li className="cards__item" onContextMenu={(e)=> e.preventDefault()}>
+    <li className="cards__item">
       <button
         type="button"
         className={cardDeleteButtonClassName}
@@ -56,17 +46,18 @@ function Card({
         src={card.link}
         onClick={handleClick}
       />
-      <div className="cards__info" onContextMenu={(e)=> e.preventDefault()}>
+      <div className="cards__info">
         <h2 className="cards__caption">{card.name}</h2>
-        <div className="cards__like-element" onClick={handleLikeCounterClick} {...longPressEvent} onContextMenu={(e)=> e.preventDefault()}>
+        <div className="cards__like-element">
           <button
             type="button"
             className={cardLikeButtonClassName}
             aria-label="Нравится"
-            onClick={handleLikeClick}
-            onContextMenu={(e)=> e.preventDefault()}
+            {...likeButtonHandlers}
           ></button>
-          <p className="cards__like-count" onContextMenu={(e)=> e.preventDefault()}>{card.likes.length}</p>
+          <p className="cards__like-count" onClick={handleLikeCounterClick}>
+            {card.likes.length}
+          </p>
         </div>
       </div>
     </li>

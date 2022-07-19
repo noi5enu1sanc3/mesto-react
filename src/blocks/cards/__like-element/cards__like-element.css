@@ -16,7 +16,11 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.cards__like-element:hover {
-  box-shadow: 2px 2px 3px rgba(0, 0, 0, .5);
-  cursor: pointer;
+@media screen and (min-width: 1000px) {
+  .cards__like-element:hover {
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, .5);
+    cursor: pointer;
+  }
 }
+
+
