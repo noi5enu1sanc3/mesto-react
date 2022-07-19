@@ -170,7 +170,7 @@ function App() {
           cards={cards}
           onCardLike={handleCardLike}
           onCardDelete={hadleCardDeleteClick}
-          onCardLikeCounter={handleCardLikeCounterClick}
+          onShowLikedBy={handleCardLikeCounterClick}
         />
         <Footer />
 

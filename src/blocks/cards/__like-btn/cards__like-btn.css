@@ -9,8 +9,17 @@
   background-repeat: no-repeat;
   cursor: pointer;
   transition: opacity .6s ease-in-out;
+  -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
-.cards__like-btn:hover {
-  opacity: .5;
+@media screen and (min-width: 1000px) {
+  .cards__like-btn:hover {
+    opacity: .5;
+  }
 }
+

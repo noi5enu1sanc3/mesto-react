@@ -10,7 +10,7 @@ function Main({
   cards,
   onCardLike,
   onCardDelete,
-  onCardLikeCounter
+  onShowLikedBy
 }) {
   const user = useContext(CurrentUserContext);
 
@@ -55,7 +55,7 @@ function Main({
               onCardClick={onCardClick}
               onCardLike={onCardLike}
               onCardDelete={onCardDelete}
-              onCardLikeCounter={onCardLikeCounter}
+              onShowLikedBy={onShowLikedBy}
             />
           ))}
         </ul>
